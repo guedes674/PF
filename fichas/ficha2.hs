@@ -1,5 +1,4 @@
 import Data.Char
-import GHC.Builtin.Names.TH (nominalRName)
 --1
 --a
 funA :: [Double] -> Double
