@@ -89,6 +89,7 @@ data Classificacao = Aprov Int | Rep | Faltou
   deriving Show
 type Turma = BTree Aluno -- arvore binaria de procura (ordenada por numero)
 
+--turma para testes retirada do github da RisingFisan
 turma1 :: Turma
 turma1 = (Node (15,"Luís",TE,Aprov 14) (Node (12,"Joana",MEL,Faltou) (Node (7,"Diogo",TE,Rep) Empty
                                                                                                Empty) 
