@@ -53,11 +53,11 @@ type Polinomio = [Monomio]
 type Monomio = (Float,Int)
 --a
 selgrau :: Int -> Polinomio -> Polinomio
-selgrau x ((a,g):t) = filter (\(a,g) -> g == x) ((a,g):t)
+selgrau a p = filter (\(x,g) -> g == a) p
 
 --b
 conta :: Int -> Polinomio -> Int
-conta n ((a,g):t) = length (filter (\(a,g) -> g == n) ((a,g):t))
+conta a p = length (filter (\(x,g) -> g == a) p)
 --ou
 contaf :: Int -> Polinomio -> Int
 contaf n p = foldl (\acc x -> if n == snd x then acc+1 else acc) 0 p
@@ -71,22 +71,25 @@ grauf p = foldl (\acc x -> if snd x > acc then snd x else acc) 0 p
 
 --d
 deriv :: Polinomio -> Polinomio
-deriv ((x,g):t) = map (\(x,g) -> (x*fromIntegral g,g-1)) ((x,g):t)
+deriv p = filter (\(x,g) -> g >= 0) (map (\(x,g) -> (x * fromIntegral g,g-1)) p)
 
 --e
 calcula :: Float -> Polinomio -> Float
-calcula v ((x,g):t) = sum (map (\(x,g) -> x * v^g) ((x,g):t))
+calcula a p = sum (map (\(x,g) -> a*x^g) p)
 --ou
 calculaf :: Float -> Polinomio -> Float
 calculaf v p = foldl (\acc x -> acc + (fst x) * v ^ snd x) 0 p
 
 --f
 simp :: Polinomio -> Polinomio
-simp p = filter (\x -> snd x /= 0) p
+simp p = filter (\(x,g) -> g>0) p
 
 --g
 mult :: Monomio -> Polinomio -> Polinomio
-mult m p = map (\x -> (fst x * fst m, snd x + snd m)) p
+mult (x,g) p = map (\(x1,g1) -> (x1*x,g1+g)) p
+--ou
+multf :: Monomio -> Polinomio -> Polinomio
+multf (x,g) p = foldl (\acc (x2,g2) -> acc ++ [(x2*x,g2+g)]) [] p
 
 --h
 ordena :: Polinomio -> Polinomio
