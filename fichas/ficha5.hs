@@ -97,7 +97,8 @@ ordena ((x,g):t) = sortOn snd ((x,g):t)
 
 --i
 normaliza :: Polinomio -> Polinomio
-normaliza (x:xs) = foldl (\((n1,g1):t) (n2,g2) -> if g1 == g2 then (n1+n2, g1):t else (n1,g1):(n2,g2):t) [x] (ordena xs)
+normaliza [] = []
+normaliza ((x,g):t) = ordena((sum [xs | (xs,gs) <- selgrau g t] + x,g) : normaliza [(x2,g2) | (x2,g2) <- t, g2/=g])
 
 --j
 soma :: Polinomio -> Polinomio -> Polinomio
