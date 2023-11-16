@@ -56,3 +56,21 @@ mirror (R r l) = R r (map mirror (reverse l))
 --e
 postorder :: RTree a -> [a]
 postorder (R r l) = concat (map postorder l) ++ [r]
+
+--3
+data LTree a = Tip a | Fork (LTree a) (LTree a)
+
+--a
+ltSum :: Num a => LTree a -> a
+ltSum (Tip a) = a
+ltSum (Fork esq dir) = ltSum esq + ltSum dir
+
+--b
+listaLT :: LTree a -> [a]
+listaLT (Tip a) = [a]
+listaLT (Fork esq dir) = listaLT esq ++ listaLT dir
+
+--c
+ltHeight :: LTree a -> Int
+ltHeight (Tip _) = 0
+ltHeight (Fork esq dir) = 1 + max (ltHeight esq) (ltHeight dir)
