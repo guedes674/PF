@@ -30,3 +30,29 @@ posfixa e = case e of
             Mais a b -> posfixa a ++ " " ++ posfixa b ++ " +"
             Menos a b -> posfixa a ++ " " ++ posfixa b ++ " -"
             Mult a b -> posfixa a ++ " " ++ posfixa b ++ " *"
+
+--2
+data RTree a = R a [RTree a] deriving Show
+
+--a
+soma :: Num a => RTree a -> a
+soma (R r []) = r
+soma (R r l) = r + sum (map soma l)
+
+--b
+altura :: RTree a -> Int
+altura (R r []) = 1
+altura (R r l) = 1 + maximum (map altura l)
+
+--c
+prune :: Int -> RTree a -> RTree a
+prune x (R r l) | x == 0 = R r []
+                | otherwise = R r (map (prune (x-1)) l)
+
+--d
+mirror :: RTree a -> RTree a
+mirror (R r l) = R r (map mirror (reverse l))
+
+--e
+postorder :: RTree a -> [a]
+postorder (R r l) = concat (map postorder l) ++ [r]
