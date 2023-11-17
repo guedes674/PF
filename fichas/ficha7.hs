@@ -58,7 +58,7 @@ postorder :: RTree a -> [a]
 postorder (R r l) = concat (map postorder l) ++ [r]
 
 --3
-data LTree a = Tip a | Fork (LTree a) (LTree a)
+data LTree a = Tip a | Fork (LTree a) (LTree a) deriving Show
 
 --a
 ltSum :: Num a => LTree a -> a
@@ -74,3 +74,21 @@ listaLT (Fork esq dir) = listaLT esq ++ listaLT dir
 ltHeight :: LTree a -> Int
 ltHeight (Tip _) = 0
 ltHeight (Fork esq dir) = 1 + max (ltHeight esq) (ltHeight dir)
+
+--4
+data BTree a = Empty | Node a (BTree a) (BTree a) deriving Show
+
+data FTree a b = Leaf b | No a (FTree a b) (FTree a b) deriving Show
+--a
+splitFTree :: FTree a b -> (BTree a, LTree b)
+splitFTree (Leaf a) = (Empty, Tip a)
+splitFTree (No a esq dir) = (Node a (fst $ splitFTree esq) (fst $ splitFTree dir), Fork (snd $ splitFTree esq) (snd $ splitFTree dir))
+
+--b (falta uma exception)
+joinTrees :: BTree a -> LTree b -> Maybe (FTree a b)
+joinTrees Empty (Tip a) = Just (Leaf a)
+joinTrees (Node a esq dir) (Fork left right) = Just (No a auxl auxr)
+    where Just auxl = joinTrees esq left
+          Just auxr = joinTrees dir right
+          _ = Nothing
+joinTrees _ _ = Nothing
