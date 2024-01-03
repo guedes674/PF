@@ -105,18 +105,22 @@ data Movimento = Credito Float | Debito Float
 data Data = D Int Int Int
 data Extracto = Ext Float [(Data, String, Movimento)]
 --a
---instance Ord Data where 
---    compare (D dia1 mes1 ano1) (D dia2 mes2 ano2) | ano1 > ano2 || ano1 == ano2 && mes1 > mes2 || ano1 == ano2 && mes1 == mes2 && dia1 > dia2 = GT
---                                                  | ano1 == ano2 && mes1 == mes2 && dia1 == dia2 = EQ
---                                                  | otherwise = LT
+instance Eq Data where
+    (D dia1 mes1 ano1) == (D dia2 mes2 ano2) | dia1 == dia2 && mes1 == mes2 && ano1 == ano2 = True
+                                             | otherwise = False
+
+instance Ord Data where 
+    compare (D dia1 mes1 ano1) (D dia2 mes2 ano2) | ano1 > ano2 || ano1 == ano2 && mes1 > mes2 || ano1 == ano2 && mes1 == mes2 && dia1 > dia2 = GT
+                                                  | ano1 == ano2 && mes1 == mes2 && dia1 == dia2 = EQ
+                                                  | otherwise = LT
 
 --b
 instance Show Data where
     show (D dia mes ano) = show dia ++ "/" ++ show mes ++ "/" ++ show ano
 
 --c
---ordena :: Extracto -> Extracto
---ordena (Ext a l) = Ext a (sortBy (\(dat1,_,_) (dat2,_,_) -> compare dat1 dat2) l)
+ordena :: Extracto -> Extracto
+ordena (Ext a l) = Ext a (sortBy (\(dat1,_,_) (dat2,_,_) -> compare dat1 dat2) l)
 
 --d
 instance Show Extracto where
